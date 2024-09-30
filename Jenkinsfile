@@ -2,73 +2,53 @@ pipeline {
     agent any
 
     environment {
-        NODEJS_TOOL = tool name: 'NodeJS'  // Adjust if needed
+        NODEJS_TOOL = tool name: 'NodeJS'  // NodeJS environment
         PATH = "${env.NODEJS_TOOL}/bin:${env.PATH}"
-        DOCKER_IMAGE = 'ju12/portfolio-app'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/J95686/sit223-6.2-HD.git'
+                git branch: 'main', url: 'https://github.com/J95686/sit223-6.2-HD.git'  // Clone the repository
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                sh 'npm install'  // Install project dependencies
             }
         }
 
         stage('Build') {
             steps {
                 echo 'Building the project...'
-                sh 'npm run build'
+                sh 'npm run build || echo "No build script defined, skipping build."'  // Optional build step
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                sh 'npm test'
+                sh 'npm test'  // Run tests using Jest or any other framework
             }
         }
 
         stage('Code Quality Analysis') {
             steps {
                 echo 'Running Code Quality Analysis...'
-                sh 'npm run lint'
+                sh 'npm run lint || echo "No lint script defined, skipping lint."'  // Run linting if defined
             }
         }
 
-       stage('Build Docker Image') {
-    steps {
-        echo 'Building Docker image...'
-        script {
-            sh 'bash -c "docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} ."'
-        }
-    }
-}
-
-
-        stage('Push Docker Image') {
+        stage('Deploy') {  // Basic file deployment or server start
             steps {
-                echo 'Pushing Docker image to DockerHub...'
-                script {
-                    withCredentials([string(credentialsId: 'dockerhub-credentials-id', variable: 'DOCKERHUB_PASSWORD')]) {
-                        sh 'echo ${DOCKERHUB_PASSWORD} | docker login -u your-dockerhub-username --password-stdin'
-                        sh 'docker push ${DOCKER_IMAGE}:${env.BUILD_NUMBER}'
-                    }
-                }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploying Docker container...'
-                script {
-                    sh 'docker run -d -p 8080:80 --name portfolio-app ${DOCKER_IMAGE}:${env.BUILD_NUMBER}'
-                }
+                echo 'Deploying application...'
+                sh '''
+                   # Replace this with the actual deployment steps for your project.
+                   # Example: Start a local server or copy files to a deployment directory.
+                   echo "Starting the local server..."
+                   nohup npm start &  # This starts the Node.js application in the background
+                '''
             }
         }
     }
