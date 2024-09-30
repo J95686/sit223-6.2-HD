@@ -2,54 +2,83 @@ pipeline {
     agent any
 
     environment {
-        NODEJS_TOOL = tool('NodeJS')  // Corrected syntax for defining NodeJS tool
+        NODEJS_TOOL = tool('NodeJS')
         PATH = "${env.NODEJS_TOOL}/bin:${env.PATH}"
-        PORT = '3000'  // Set the application port to 3000
+        PORT = '3000'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/J95686/sit223-6.2-HD.git'  // Clone the repository
+                git branch: 'main', url: 'https://github.com/J95686/sit223-6.2-HD.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'  // Install project dependencies
+                script {
+                    if (isUnix()) {
+                        sh 'npm install'
+                    } else {
+                        bat 'npm install'
+                    }
+                }
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Building the project...'
-                sh 'npm run build || echo "No build script defined, skipping build."'  // Optional build step
+                script {
+                    if (isUnix()) {
+                        sh 'npm run build'
+                    } else {
+                        bat 'npm run build'
+                    }
+                }
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running tests...'
-                sh 'npm test'  // Run tests using Jest or any other framework
+                script {
+                    if (isUnix()) {
+                        sh 'npm test'
+                    } else {
+                        bat 'npm test'
+                    }
+                }
             }
         }
 
         stage('Code Quality Analysis') {
             steps {
-                echo 'Running Code Quality Analysis...'
-                sh 'npm run lint || echo "No lint script defined, skipping lint."'  // Run linting if defined
+                script {
+                    if (isUnix()) {
+                        sh 'npm run lint'
+                    } else {
+                        bat 'npm run lint'
+                    }
+                }
             }
         }
 
-        stage('Deploy') {  // Deployment stage to start the server on port 3000
+        stage('Deploy') {
             steps {
-                echo 'Deploying application on port 3000...'
-                sh '''
-                   # Set the PORT environment variable and start the server
-                   export PORT=3000
-                   echo "Starting the server on port $PORT..."
-                   nohup npm start &  # Run the application in the background on port 3000
-                '''
+                script {
+                    if (isUnix()) {
+                        // Linux/Unix Deployment Script
+                        sh '''
+                            export PORT=3000
+                            nohup npm start &
+                        '''
+                    } else {
+                        // Windows Deployment Script
+                        bat '''
+                            set PORT=3000
+                            start /B npm start
+                        '''
+                    }
+                }
             }
         }
     }
