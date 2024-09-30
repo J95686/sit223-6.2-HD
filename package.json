@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "build": "echo 'Build step executed successfully!'",
-    "lint": "echo 'Linting step executed successfully!'"
+    "lint": "echo 'Linting step executed successfully!'",
+    "start": "PORT=3000 node scripts.js"  // Added start script to run on port 3000
   },
   "keywords": [],
   "author": "",
