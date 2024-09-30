@@ -1,8 +1,8 @@
 pipeline {
     agent any
 
-   environment {
-    NODE_HOME = tool name: 'NodeJS', type: 'NodeJS' // Ensure this matches the name shown in Jenkins
+  environment {
+    NODE_HOME = tool name: 'NodeJS 22.9.0', type: 'NodeJS'
     PATH = "${env.NODE_HOME}/bin:${env.PATH}"
     DOCKER_IMAGE = 'ju12/portfolio-app' // Replace with your DockerHub username and repository name
 }
