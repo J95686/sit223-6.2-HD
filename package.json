@@ -5,7 +5,8 @@
   "main": "scripts.js",
   "scripts": {
     "test": "jest",
-    "build": "echo 'Build step executed successfully!'"
+    "build": "echo 'Build step executed successfully!'",
+    "lint": "echo 'Linting step executed successfully!'"
   },
   "keywords": [],
   "author": "",
