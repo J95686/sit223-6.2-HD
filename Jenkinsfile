@@ -1,38 +1,34 @@
 pipeline {
     agent any
 
-  environment {
-    NODE_HOME = tool name: 'NodeJS', type: 'NodeJS'
-    PATH = "${env.NODE_HOME}/bin:${env.PATH}"
-    DOCKER_IMAGE = 'ju12/portfolio-app' // Replace with your DockerHub username and repository name
-}
+    environment {
+        NODEJS_TOOL = tool name: 'NodeJS'  // Adjust if needed
+        PATH = "${env.NODEJS_TOOL}/bin:${env.PATH}"
+        DOCKER_IMAGE = 'ju12/portfolio-app'
+    }
 
     stages {
         stage('Checkout') {
             steps {
-                // Clone the repository
-                git 'https://github.com/your-username/sit223-6.2-HD.git' // Change to your repository URL
+                git 'https://github.com/J95686/sit223-6.2-HD.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                // Install project dependencies
                 sh 'npm install'
             }
         }
 
         stage('Build') {
             steps {
-                // Build the project (optional based on your configuration)
                 echo 'Building the project...'
-                sh 'npm run build'  // Ensure you have a build script in your package.json if needed
+                sh 'npm run build'
             }
         }
 
         stage('Test') {
             steps {
-                // Run the tests using Jest
                 echo 'Running tests...'
                 sh 'npm test'
             }
@@ -40,7 +36,6 @@ pipeline {
 
         stage('Code Quality Analysis') {
             steps {
-                // Perform Code Quality Analysis (using ESLint, SonarQube, etc.)
                 echo 'Running Code Quality Analysis...'
                 sh 'npm run lint'
             }
@@ -48,7 +43,6 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                // Build Docker image
                 echo 'Building Docker image...'
                 script {
                     sh 'docker build -t ${DOCKER_IMAGE}:${env.BUILD_NUMBER} .'
@@ -58,7 +52,6 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                // Push Docker image to DockerHub
                 echo 'Pushing Docker image to DockerHub...'
                 script {
                     withCredentials([string(credentialsId: 'dockerhub-credentials-id', variable: 'DOCKERHUB_PASSWORD')]) {
@@ -71,7 +64,6 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                // Deploy Docker container
                 echo 'Deploying Docker container...'
                 script {
                     sh 'docker run -d -p 8080:80 --name portfolio-app ${DOCKER_IMAGE}:${env.BUILD_NUMBER}'
