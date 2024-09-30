@@ -5,7 +5,7 @@ pipeline {
         NODEJS_TOOL = tool('NodeJS')
         PATH = "${env.NODEJS_TOOL}/bin:${env.PATH}"
         PORT = '3000'
-    }
+    } 
 
     stages {
         stage('Checkout') {
