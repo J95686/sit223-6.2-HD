@@ -2,8 +2,9 @@ pipeline {
     agent any
 
     environment {
-        NODEJS_TOOL = tool name: 'NodeJS'  // NodeJS environment
+        NODEJS_TOOL = tool name: 'NodeJS'  // Define NodeJS tool
         PATH = "${env.NODEJS_TOOL}/bin:${env.PATH}"
+        PORT = 3000  // Set the application port to 3000
     }
 
     stages {
@@ -40,14 +41,14 @@ pipeline {
             }
         }
 
-        stage('Deploy') {  // Basic file deployment or server start
+        stage('Deploy') {  // Deployment stage to start the server on port 3000
             steps {
-                echo 'Deploying application...'
+                echo 'Deploying application on port 3000...'
                 sh '''
-                   # Replace this with the actual deployment steps for your project.
-                   # Example: Start a local server or copy files to a deployment directory.
-                   echo "Starting the local server..."
-                   nohup npm start &  # This starts the Node.js application in the background
+                   # Set the PORT environment variable and start the server
+                   export PORT=3000
+                   echo "Starting the server on port $PORT..."
+                   nohup npm start &  # Run the application in the background on port 3000
                 '''
             }
         }
@@ -55,10 +56,12 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline executed successfully!'
+            echo 'Pipeline executed successfully and the application is running on port 3000!'
         }
         failure {
             echo 'Pipeline failed.'
         }
     }
+}
+
 }
