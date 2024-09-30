@@ -2,12 +2,12 @@
   "name": "portfolio",
   "version": "1.0.0",
   "description": "",
-  "main": "scripts.js",
+  "main": "server.js",
   "scripts": {
     "test": "jest",
     "build": "echo 'Build step executed successfully!'",
     "lint": "echo 'Linting step executed successfully!'",
-    "start": "PORT=3000 node scripts.js"
+    "start": "PORT=3000 node server.js"  // Updated to use server.js
   },
   "keywords": [],
   "author": "",
@@ -24,3 +24,4 @@
     }
   }
 }
+
