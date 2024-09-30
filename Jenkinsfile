@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        NODEJS_TOOL = tool name: 'NodeJS'  // Define NodeJS tool
+        NODEJS_TOOL = tool('NodeJS')  // Corrected syntax for defining NodeJS tool
         PATH = "${env.NODEJS_TOOL}/bin:${env.PATH}"
-        PORT = 3000  // Set the application port to 3000
+        PORT = '3000'  // Set the application port to 3000
     }
 
     stages {
@@ -63,4 +63,3 @@ pipeline {
         }
     }
 }
-
