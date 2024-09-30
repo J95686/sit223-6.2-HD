@@ -7,7 +7,7 @@
     "test": "jest",
     "build": "echo 'Build step executed successfully!'",
     "lint": "echo 'Linting step executed successfully!'",
-    "start": "PORT=3000 node server.js"  // Updated to use server.js
+    "start": "PORT=3000 node server.js"
   },
   "keywords": [],
   "author": "",
@@ -24,4 +24,3 @@
     }
   }
 }
-
