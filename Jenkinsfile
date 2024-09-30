@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/J95686/sit223-6.2-HD.git'
+                git branch: 'main', url: 'https://github.com/J95686/sit223-6.2-HD.git'
             }
         }
 
